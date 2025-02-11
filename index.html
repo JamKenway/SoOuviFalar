@@ -123,39 +123,38 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        function renderPosts() {
+        function renderPost() {
             const postContainer = document.getElementById("posts");
             postContainer.innerHTML = "";
             
-            db.collection("posts").orderBy("date", "desc").get()
-            .then((querySnapshot) => {
-                if (querySnapshot.empty) {
+            // Buscando um post específico
+            db.collection("posts").doc("6EkREHIVEoWsEV19OeN3").get()
+            .then((doc) => {
+                if (!doc.exists) {
                     postContainer.innerHTML = "<p>Nenhuma postagem encontrada.</p>";
                     return;
                 }
-                querySnapshot.forEach((doc) => {
-                    const post = doc.data();
-                    const postElement = document.createElement("div");
-                    postElement.classList.add("post");
-                    postElement.innerHTML = `
-                        <h2>${post.title}</h2>
-                        <img src="${post.image}" alt="Imagem do post">
-                        <p>${post.content}</p>
-                        <div class="share">
-                            <a href="#">Compartilhar no Facebook</a>
-                            <a href="#">Compartilhar no Twitter</a>
-                        </div>
-                    `;
-                    postContainer.appendChild(postElement);
-                });
+                const post = doc.data();
+                const postElement = document.createElement("div");
+                postElement.classList.add("post");
+                postElement.innerHTML = `
+                    <h2>${post.title}</h2>
+                    <img src="${post.image}" alt="Imagem do post">
+                    <p>${post.content}</p>
+                    <div class="share">
+                        <a href="#">Compartilhar no Facebook</a>
+                        <a href="#">Compartilhar no Twitter</a>
+                    </div>
+                `;
+                postContainer.appendChild(postElement);
             })
             .catch(error => {
-                console.error("Erro ao buscar postagens: ", error);
-                postContainer.innerHTML = `<p style="color: red;">Erro ao carregar postagens. Verifique o console.</p>`;
+                console.error("Erro ao buscar postagem: ", error);
+                postContainer.innerHTML = `<p style="color: red;">Erro ao carregar a postagem. Verifique o console.</p>`;
             });
         }
         
-        renderPosts();
+        renderPost();
     </script>
 </body>
 </html>
