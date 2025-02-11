@@ -123,19 +123,15 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Adicionando Post ao Firestore (caso ainda não exista)
-        db.collection("posts").doc("post001").set({
-            title: "A Revolução dos Carros Elétricos: O Futuro da Mobilidade",
-            content: "No mundo acelerado de hoje, os carros elétricos estão se tornando mais do que uma tendência; eles são o futuro da mobilidade! Saiba como essa revolução pode impactar o mercado financeiro.",
-            image: "https://via.placeholder.com/800x400",
-            date: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
         function renderPosts() {
             const postContainer = document.getElementById("posts");
             postContainer.innerHTML = "";
             
-            db.collection("posts").orderBy("date", "desc").get().then((querySnapshot) => {
+            db.collection("posts").get().then((querySnapshot) => {
+                if (querySnapshot.empty) {
+                    postContainer.innerHTML = "<p>Nenhuma postagem encontrada.</p>";
+                    return;
+                }
                 querySnapshot.forEach((doc) => {
                     const post = doc.data();
                     const postElement = document.createElement("div");
@@ -151,6 +147,8 @@
                     `;
                     postContainer.appendChild(postElement);
                 });
+            }).catch(error => {
+                console.error("Erro ao buscar postagens: ", error);
             });
         }
         
