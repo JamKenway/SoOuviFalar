@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Money Clicks - Ganhe Apenas com Acessos</title>
+    <title>Money Clicks - Blog</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
             padding: 0;
             background-color: #f8f9fa;
@@ -16,39 +15,50 @@
             background-color: #007bff;
             color: white;
             padding: 20px;
+            text-align: center;
             font-size: 24px;
         }
         .container {
+            max-width: 800px;
+            margin: auto;
             padding: 20px;
         }
-        .ad-space {
-            width: 100%;
-            height: 250px;
-            background-color: #ccc;
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: #333;
+        .post {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .post h2 {
+            margin: 0 0 10px;
+        }
+        .post img {
+            max-width: 100%;
+            border-radius: 5px;
         }
         footer {
             background-color: #007bff;
             color: white;
+            text-align: center;
             padding: 10px;
-            position: fixed;
+            position: relative;
             bottom: 0;
             width: 100%;
         }
     </style>
     <!-- Código do Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4859599011548606" crossorigin="anonymous"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 </head>
 <body>
-    <header>💰 Money Clicks - Ganhe com Acessos! 💰</header>
+    <header>💰 Money Clicks - Blog 💰</header>
     <div class="container">
-        <h2>Seja bem-vindo!</h2>
-        <p>Você pode ajudar a manter este site apenas acessando e compartilhando.</p>
+        <h2>Últimas Postagens</h2>
+        <div id="posts"></div>
         
         <!-- Bloco de anúncio do AdSense -->
         <ins class="adsbygoogle"
@@ -60,18 +70,43 @@
         <script>
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-        
-        <p>Compartilhe este site e ajude a crescer! Mais visitas, mais ganhos. 🚀</p>
-        
-        <!-- Links de Afiliados -->
-        <h3>💲 Produtos Recomendados 💲</h3>
-        <ul>
-            <li><a href="https://www.amazon.com.br" target="_blank">Ganhe dinheiro com a Amazon!</a></li>
-            <li><a href="https://www.hotmart.com/pt-br" target="_blank">Cursos que podem mudar sua vida!</a></li>
-            <li><a href="https://monetizze.com.br/" target="_blank">Afiliado Monetizze - Comece agora!</a></li>
-        </ul>
     </div>
     <footer>© 2025 Money Clicks - Todos os direitos reservados.</footer>
+
+    <script>
+        // Configuração do Firebase (Substitua com suas credenciais)
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_AUTH_DOMAIN",
+            projectId: "SEU_PROJECT_ID",
+            storageBucket: "SEU_STORAGE_BUCKET",
+            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        function renderPosts() {
+            const postContainer = document.getElementById("posts");
+            postContainer.innerHTML = "";
+            
+            db.collection("posts").orderBy("date", "desc").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const post = doc.data();
+                    const postElement = document.createElement("div");
+                    postElement.classList.add("post");
+                    postElement.innerHTML = `
+                        <h2>${post.title}</h2>
+                        <img src="${post.image}" alt="Imagem do post">
+                        <p>${post.content}</p>
+                    `;
+                    postContainer.appendChild(postElement);
+                });
+            });
+        }
+        
+        renderPosts();
+    </script>
 </body>
 </html>
-
