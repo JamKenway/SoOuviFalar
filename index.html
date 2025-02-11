@@ -17,7 +17,7 @@
             color: white;
             padding: 20px;
             text-align: center;
-            font-size: 2em;
+            font-size: 2.5em;
             font-weight: bold;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             position: relative;
@@ -49,44 +49,48 @@
         }
         .post {
             background: #252525;
-            padding: 20px;
+            padding: 30px;
             border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-            transition: transform 0.2s;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
             text-align: justify;
         }
         .post:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
         }
         .post h2 {
             color: #ff0000;
             text-align: center;
-            font-size: 2em;
+            font-size: 2.2em;
+            margin-bottom: 20px;
         }
         .post img {
             width: 100%;
-            border-radius: 8px;
+            border-radius: 10px;
             margin: 20px 0;
             display: block;
+            box-shadow: 0 4px 6px rgba(255, 0, 0, 0.3);
         }
         .post p {
-            font-size: 1.2em;
-            line-height: 1.6;
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 20px;
         }
         .post .share {
-            margin-top: 20px;
+            margin-top: 30px;
             text-align: center;
         }
         .post .share a {
             margin: 5px;
-            padding: 10px 20px;
+            padding: 12px 25px;
             text-decoration: none;
             color: white;
             background-color: #ff0000;
             border-radius: 5px;
             font-weight: bold;
             transition: 0.3s;
+            font-size: 1.1em;
         }
         .post .share a:hover {
             background-color: #8a2be2;
@@ -106,28 +110,17 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-</head>
-<body>
-    <header>🚀 Neon Finance - Informação Inteligente</header>
-    <nav>
-        <a href="#">Início</a>
-        <a href="#">Financeiro</a>
-        <a href="#">Contos</a>
-        <a href="#">Educação</a>
-        <a href="#">Vidas & Histórias</a>
-        <a href="#">Sobre</a>
-        <a href="#">Contato</a>
-    </nav>
-    <div class="container">
-        <h2>Últimas Postagens</h2>
-        <div id="posts"></div>
-    </div>
-    <footer>
-        <p>© 2025 Neon Finance - Informação Inteligente.</p>
-        <p><a href="#" style="color: white;">Política de Privacidade</a> | <a href="#" style="color: white;">Termos de Uso</a></p>
-    </footer>
-
     <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsMk5SshHKwY7y7zi4cgc8uI-Jz2q_e8M",
+            authDomain: "fina-kenway.firebaseapp.com",
+            projectId: "fina-kenway",
+            storageBucket: "fina-kenway.appspot.com",
+            messagingSenderId: "559758011438",
+            appId: "1:559758011438:web:86329ee53ab213ab87c3bf",
+            measurementId: "G-1D036HTJPP"
+        };
+        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
@@ -150,8 +143,8 @@
                     <img src="${post.image}" alt="Imagem do post">
                     <p>${post.content}</p>
                     <div class="share">
-                        <a href="#">Compartilhar no Facebook</a>
-                        <a href="#">Compartilhar no Twitter</a>
+                        <a href="#">📘 Compartilhar no Facebook</a>
+                        <a href="#">🐦 Compartilhar no Twitter</a>
                     </div>
                 `;
                 postContainer.appendChild(postElement);
@@ -164,5 +157,25 @@
         
         renderPost();
     </script>
+</head>
+<body>
+    <header>🚀 Neon Finance - Informação Inteligente</header>
+    <nav>
+        <a href="#">Início</a>
+        <a href="#">Financeiro</a>
+        <a href="#">Contos</a>
+        <a href="#">Educação</a>
+        <a href="#">Vidas & Histórias</a>
+        <a href="#">Sobre</a>
+        <a href="#">Contato</a>
+    </nav>
+    <div class="container">
+        <h2>Últimas Postagens</h2>
+        <div id="posts"></div>
+    </div>
+    <footer>
+        <p>© 2025 Neon Finance - Informação Inteligente.</p>
+        <p><a href="#" style="color: white;">Política de Privacidade</a> | <a href="#" style="color: white;">Termos de Uso</a></p>
+    </footer>
 </body>
 </html>
