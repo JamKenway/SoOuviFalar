@@ -13,15 +13,13 @@
             padding: 0;
         }
         header {
-            background: linear-gradient(90deg, #ff0000, #8a2be2, #00ffff);
+            background: url('https://via.placeholder.com/1600x600?text=Infinity+Hub') no-repeat center center/cover;
             color: white;
-            padding: 20px;
+            padding: 60px 20px;
             text-align: center;
-            font-size: 2.5em;
+            font-size: 3em;
             font-weight: bold;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 1000;
         }
         nav {
             background-color: #222;
@@ -77,23 +75,26 @@
             line-height: 1.8;
             margin-bottom: 20px;
         }
-        .post .share {
+        .comments {
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
             margin-top: 30px;
-            text-align: center;
         }
-        .post .share a {
-            margin: 5px;
-            padding: 12px 25px;
-            text-decoration: none;
-            color: white;
-            background-color: #ff0000;
+        .comments input, .comments textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
             border-radius: 5px;
-            font-weight: bold;
-            transition: 0.3s;
-            font-size: 1.1em;
+            border: none;
         }
-        .post .share a:hover {
-            background-color: #8a2be2;
+        .comments button {
+            background: #ff0000;
+            color: white;
+            padding: 10px;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
         }
         footer {
             background: linear-gradient(90deg, #ff0000, #8a2be2, #00ffff);
@@ -120,43 +121,50 @@
             };
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
-            function renderPost() {
+            function renderPosts(category) {
                 const postContainer = document.getElementById("posts");
-                if (!postContainer) {
-                    console.error("⚠️ ERRO: Elemento #posts não encontrado no HTML.");
-                    return;
-                }
-                postContainer.innerHTML = "<p>Carregando post...</p>";
-                db.collection("posts").doc("6EkREHIVEoWsEV19OeN3").get()
-                .then((doc) => {
-                    if (!doc.exists) {
-                        console.warn("⚠️ Nenhuma postagem encontrada no Firestore.");
-                        postContainer.innerHTML = "<p style='color: yellow;'>Nenhuma postagem encontrada.</p>";
-                        return;
-                    }
-                    const post = doc.data();
-                    console.log("📢 Post carregado:", post);
-                    const postElement = document.createElement("div");
-                    postElement.classList.add("post");
-                    postElement.innerHTML = `
-                        <h2>${post.title}</h2>
-                        <img src="${post.image}" alt="Imagem do post" onerror="this.src='https://via.placeholder.com/800x400?text=Imagem+Indisponível'">
-                        <p>${post.content}</p>
-                        <div class="share">
-                            <a href="#">📘 Compartilhar no Facebook</a>
-                            <a href="#">🐦 Compartilhar no Twitter</a>
-                        </div>
-                    `;
+                postContainer.innerHTML = "<p>Carregando postagens...</p>";
+                db.collection("posts").where("category", "==", category).get()
+                .then((querySnapshot) => {
                     postContainer.innerHTML = "";
-                    postContainer.appendChild(postElement);
-                })
-                .catch(error => {
-                    console.error("🔥 Erro ao buscar postagem:", error);
-                    postContainer.innerHTML = `<p style="color: red;">Erro ao carregar a postagem. Verifique o console.</p>`;
+                    querySnapshot.forEach((doc) => {
+                        const post = doc.data();
+                        const postElement = document.createElement("div");
+                        postElement.classList.add("post");
+                        postElement.innerHTML = `
+                            <h2>${post.title}</h2>
+                            <img src="${post.image}" alt="Imagem do post">
+                            <p>${post.content}</p>
+                        `;
+                        postContainer.appendChild(postElement);
+                    });
+                }).catch(error => {
+                    console.error("🔥 Erro ao buscar postagens:", error);
+                    postContainer.innerHTML = `<p style="color: red;">Erro ao carregar postagens. Verifique o console.</p>`;
                 });
             }
-            renderPost();
+            renderPosts("Financeiro");
         });
     </script>
 </head>
 <body>
+    <header>Infinity Hub - Conhecimento Sem Limites</header>
+    <nav>
+        <a href="#">Início</a>
+        <a href="#" onclick="renderPosts('Financeiro')">Financeiro</a>
+        <a href="#" onclick="renderPosts('Jogos')">Jogos</a>
+        <a href="#" onclick="renderPosts('Histórias')">Histórias da Vida Real</a>
+        <a href="#" onclick="renderPosts('Contos')">Contos</a>
+        <a href="#" onclick="renderPosts('Discussões')">Discussões</a>
+        <a href="#" onclick="renderPosts('Saúde')">Saúde & Cuidados Pessoais</a>
+    </nav>
+    <div class="container">
+        <h2>Últimas Postagens</h2>
+        <div id="posts"></div>
+    </div>
+    <footer>
+        <p>© 2025 Infinity Hub - Conhecimento Sem Limites.</p>
+        <p><a href="#" style="color: white;">Política de Privacidade</a> | <a href="#" style="color: white;">Termos de Uso</a></p>
+    </footer>
+</body>
+</html>
