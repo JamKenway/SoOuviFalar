@@ -85,8 +85,8 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4859599011548606" crossorigin="anonymous"></script>
     
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
     <header>🚀 Neon Finance - Informação Inteligente</header>
@@ -120,6 +120,7 @@
             measurementId: "G-1D036HTJPP"
         };
         
+        // Inicializando Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
@@ -135,6 +136,7 @@
                     return;
                 }
                 const post = doc.data();
+                console.log("Post carregado:", post); // Debug no console
                 const postElement = document.createElement("div");
                 postElement.classList.add("post");
                 postElement.innerHTML = `
@@ -149,7 +151,7 @@
                 postContainer.appendChild(postElement);
             })
             .catch(error => {
-                console.error("Erro ao buscar postagem: ", error);
+                console.error("Erro ao buscar postagem:", error);
                 postContainer.innerHTML = `<p style="color: red;">Erro ao carregar a postagem. Verifique o console.</p>`;
             });
         }
