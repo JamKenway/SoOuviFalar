@@ -127,7 +127,8 @@
             const postContainer = document.getElementById("posts");
             postContainer.innerHTML = "";
             
-            db.collection("posts").get().then((querySnapshot) => {
+            db.collection("posts").orderBy("date", "desc").get()
+            .then((querySnapshot) => {
                 if (querySnapshot.empty) {
                     postContainer.innerHTML = "<p>Nenhuma postagem encontrada.</p>";
                     return;
@@ -147,8 +148,10 @@
                     `;
                     postContainer.appendChild(postElement);
                 });
-            }).catch(error => {
+            })
+            .catch(error => {
                 console.error("Erro ao buscar postagens: ", error);
+                postContainer.innerHTML = `<p style="color: red;">Erro ao carregar postagens. Verifique o console.</p>`;
             });
         }
         
