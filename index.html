@@ -6,42 +6,47 @@
     <title>Money Clicks - Blog</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
         }
         header {
-            background-color: #007bff;
+            background-color: #00539C;
             color: white;
-            padding: 20px;
             text-align: center;
-            font-size: 24px;
+            padding: 20px;
+            font-size: 2em;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .container {
-            max-width: 800px;
-            margin: auto;
+            max-width: 900px;
+            margin: 40px auto;
             padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .post {
             background: white;
-            padding: 15px;
+            padding: 20px;
+            border-radius: 8px;
             margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .post h2 {
-            margin: 0 0 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .post img {
-            max-width: 100%;
-            border-radius: 5px;
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
         }
         footer {
-            background-color: #007bff;
+            background-color: #00539C;
             color: white;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
+            font-size: 1em;
             position: relative;
             bottom: 0;
             width: 100%;
@@ -59,17 +64,6 @@
     <div class="container">
         <h2>Últimas Postagens</h2>
         <div id="posts"></div>
-        
-        <!-- Bloco de anúncio do AdSense -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-4859599011548606"
-             data-ad-slot="5080082651"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
     </div>
     <footer>© 2025 Money Clicks - Todos os direitos reservados.</footer>
 
@@ -92,8 +86,8 @@
             const postContainer = document.getElementById("posts");
             postContainer.innerHTML = "";
             
-            db.collection("posts").orderBy("date", "desc").get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
+            db.collection("posts").doc("6EkREHIVEoWsEV19OeN3").get().then((doc) => {
+                if (doc.exists) {
                     const post = doc.data();
                     const postElement = document.createElement("div");
                     postElement.classList.add("post");
@@ -103,7 +97,9 @@
                         <p>${post.content}</p>
                     `;
                     postContainer.appendChild(postElement);
-                });
+                } else {
+                    postContainer.innerHTML = "<p>Nenhuma postagem encontrada.</p>";
+                }
             });
         }
         
