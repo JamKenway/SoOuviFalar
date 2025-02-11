@@ -110,61 +110,37 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const firebaseConfig = {
-                apiKey: "AIzaSyBsMk5SshHKwY7y7zi4cgc8uI-Jz2q_e8M",
-                authDomain: "fina-kenway.firebaseapp.com",
-                projectId: "fina-kenway",
-                storageBucket: "fina-kenway.appspot.com",
-                messagingSenderId: "559758011438",
-                appId: "1:559758011438:web:86329ee53ab213ab87c3bf",
-                measurementId: "G-1D036HTJPP"
-            };
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.firestore();
-            function renderPosts(category) {
-                const postContainer = document.getElementById("posts");
-                postContainer.innerHTML = "<p>Carregando postagens...</p>";
-                db.collection("posts").where("category", "==", category).get()
-                .then((querySnapshot) => {
-                    postContainer.innerHTML = "";
-                    querySnapshot.forEach((doc) => {
-                        const post = doc.data();
-                        const postElement = document.createElement("div");
-                        postElement.classList.add("post");
-                        postElement.innerHTML = `
-                            <h2>${post.title}</h2>
-                            <img src="${post.image}" alt="Imagem do post">
-                            <p>${post.content}</p>
-                        `;
-                        postContainer.appendChild(postElement);
+            fetch("/firebase-config.json")
+            .then(response => response.json())
+            .then(firebaseConfig => {
+                firebase.initializeApp(firebaseConfig);
+                const db = firebase.firestore();
+                function renderPosts(category) {
+                    const postContainer = document.getElementById("posts");
+                    postContainer.innerHTML = "<p>Carregando postagens...</p>";
+                    db.collection("posts").where("category", "==", category).get()
+                    .then((querySnapshot) => {
+                        postContainer.innerHTML = "";
+                        querySnapshot.forEach((doc) => {
+                            const post = doc.data();
+                            const postElement = document.createElement("div");
+                            postElement.classList.add("post");
+                            postElement.innerHTML = `
+                                <h2>${post.title}</h2>
+                                <img src="${post.image}" alt="Imagem do post">
+                                <p>${post.content}</p>
+                            `;
+                            postContainer.appendChild(postElement);
+                        });
+                    }).catch(error => {
+                        console.error("🔥 Erro ao buscar postagens:", error);
+                        postContainer.innerHTML = `<p style="color: red;">Erro ao carregar postagens. Verifique o console.</p>`;
                     });
-                }).catch(error => {
-                    console.error("🔥 Erro ao buscar postagens:", error);
-                    postContainer.innerHTML = `<p style="color: red;">Erro ao carregar postagens. Verifique o console.</p>`;
-                });
-            }
-            renderPosts("Financeiro");
+                }
+                renderPosts("Financeiro");
+            })
+            .catch(error => console.error("Erro ao carregar configuração do Firebase:", error));
         });
     </script>
 </head>
 <body>
-    <header>Infinity Hub - Conhecimento Sem Limites</header>
-    <nav>
-        <a href="#">Início</a>
-        <a href="#" onclick="renderPosts('Financeiro')">Financeiro</a>
-        <a href="#" onclick="renderPosts('Jogos')">Jogos</a>
-        <a href="#" onclick="renderPosts('Histórias')">Histórias da Vida Real</a>
-        <a href="#" onclick="renderPosts('Contos')">Contos</a>
-        <a href="#" onclick="renderPosts('Discussões')">Discussões</a>
-        <a href="#" onclick="renderPosts('Saúde')">Saúde & Cuidados Pessoais</a>
-    </nav>
-    <div class="container">
-        <h2>Últimas Postagens</h2>
-        <div id="posts"></div>
-    </div>
-    <footer>
-        <p>© 2025 Infinity Hub - Conhecimento Sem Limites.</p>
-        <p><a href="#" style="color: white;">Política de Privacidade</a> | <a href="#" style="color: white;">Termos de Uso</a></p>
-    </footer>
-</body>
-</html>
