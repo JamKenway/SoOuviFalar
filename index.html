@@ -54,23 +54,42 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             transition: transform 0.2s;
+            text-align: justify;
         }
         .post:hover {
             transform: scale(1.02);
         }
+        .post h2 {
+            color: #ff0000;
+            text-align: center;
+            font-size: 2em;
+        }
         .post img {
             width: 100%;
             border-radius: 8px;
-            margin-bottom: 10px;
+            margin: 20px 0;
+            display: block;
+        }
+        .post p {
+            font-size: 1.2em;
+            line-height: 1.6;
         }
         .post .share {
-            margin-top: 10px;
+            margin-top: 20px;
+            text-align: center;
         }
         .post .share a {
-            margin-right: 10px;
+            margin: 5px;
+            padding: 10px 20px;
             text-decoration: none;
-            color: #ff0000;
+            color: white;
+            background-color: #ff0000;
+            border-radius: 5px;
             font-weight: bold;
+            transition: 0.3s;
+        }
+        .post .share a:hover {
+            background-color: #8a2be2;
         }
         footer {
             background: linear-gradient(90deg, #ff0000, #8a2be2, #00ffff);
@@ -109,18 +128,6 @@
     </footer>
 
     <script>
-        // Configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyBsMk5SshHKwY7y7zi4cgc8uI-Jz2q_e8M",
-            authDomain: "fina-kenway.firebaseapp.com",
-            projectId: "fina-kenway",
-            storageBucket: "fina-kenway.appspot.com",
-            messagingSenderId: "559758011438",
-            appId: "1:559758011438:web:86329ee53ab213ab87c3bf",
-            measurementId: "G-1D036HTJPP"
-        };
-        
-        // Inicializando Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
@@ -128,7 +135,6 @@
             const postContainer = document.getElementById("posts");
             postContainer.innerHTML = "";
             
-            // Buscando um post específico
             db.collection("posts").doc("6EkREHIVEoWsEV19OeN3").get()
             .then((doc) => {
                 if (!doc.exists) {
@@ -136,7 +142,7 @@
                     return;
                 }
                 const post = doc.data();
-                console.log("Post carregado:", post); // Debug no console
+                console.log("Post carregado:", post);
                 const postElement = document.createElement("div");
                 postElement.classList.add("post");
                 postElement.innerHTML = `
