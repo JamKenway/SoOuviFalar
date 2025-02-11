@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Money Clicks - Blog</title>
+    <title>Neon Finance - Informação Inteligente</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: #121212;
+            color: #fff;
             margin: 0;
             padding: 0;
         }
         header {
-            background-color: #00539C;
+            background: linear-gradient(90deg, #ff0000, #8a2be2, #00ffff);
             color: white;
             padding: 20px;
             text-align: center;
             font-size: 2em;
             font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             position: relative;
             z-index: 1000;
         }
         nav {
-            background-color: #003366;
+            background-color: #222;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
         }
         nav a {
             color: white;
@@ -34,21 +34,25 @@
             padding: 10px 20px;
             display: inline-block;
             font-weight: bold;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            color: #ff0000;
         }
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 40px auto;
             padding: 20px;
-            background: white;
+            background: #1e1e1e;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
         }
         .post {
-            background: white;
+            background: #252525;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             transition: transform 0.2s;
         }
         .post:hover {
@@ -65,18 +69,15 @@
         .post .share a {
             margin-right: 10px;
             text-decoration: none;
-            color: #00539C;
+            color: #ff0000;
             font-weight: bold;
         }
         footer {
-            background-color: #00539C;
+            background: linear-gradient(90deg, #ff0000, #8a2be2, #00ffff);
             color: white;
             text-align: center;
             padding: 15px;
             font-size: 1em;
-            position: relative;
-            bottom: 0;
-            width: 100%;
             margin-top: 40px;
         }
     </style>
@@ -88,9 +89,13 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 </head>
 <body>
-    <header>💰 Money Clicks - Blog 💰</header>
+    <header>🚀 Neon Finance - Informação Inteligente</header>
     <nav>
         <a href="#">Início</a>
+        <a href="#">Financeiro</a>
+        <a href="#">Contos</a>
+        <a href="#">Educação</a>
+        <a href="#">Vidas & Histórias</a>
         <a href="#">Sobre</a>
         <a href="#">Contato</a>
     </nav>
@@ -99,7 +104,7 @@
         <div id="posts"></div>
     </div>
     <footer>
-        <p>© 2025 Money Clicks - Todos os direitos reservados.</p>
+        <p>© 2025 Neon Finance - Informação Inteligente.</p>
         <p><a href="#" style="color: white;">Política de Privacidade</a> | <a href="#" style="color: white;">Termos de Uso</a></p>
     </footer>
 
