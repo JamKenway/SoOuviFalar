@@ -7,6 +7,7 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
+            background-color: #121212;
             background: url('https://firebasestorage.googleapis.com/v0/b/fina-kenway.firebasestorage.app/o/DALL%C2%B7E%202025-02-11%2022.33.15%20-%20A%20high-quality%20digital%20wallpaper%20representing%20vast%20and%20diverse%20knowledge%2C%20perfect%20for%20a%20modern%20blog.%20The%20image%20should%20feature%20a%20cosmic%20background%20with.webp?alt=media&token=fd6a1807-a10d-4ccf-a8c1-fad26058e06a') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
@@ -14,7 +15,7 @@
             padding: 0;
         }
         header {
-            background: rgba(0, 0, 0, 0.7);
+            background: url('https://source.unsplash.com/1600x600/?technology,finance') no-repeat center center/cover;
             color: white;
             padding: 60px 20px;
             text-align: center;
@@ -42,7 +43,7 @@
             max-width: 1000px;
             margin: 40px auto;
             padding: 20px;
-            background: rgba(30, 30, 30, 0.9);
+            background: #1e1e1e;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
         }
@@ -107,5 +108,52 @@
         <p>© 2025 Infinity Hub - Conhecimento Sem Limites.</p>
         <p><a href="#" style="color: white;">Política de Privacidade</a> | <a href="#" style="color: white;">Termos de Uso</a></p>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const firebaseConfig = {
+                apiKey: "AIzaSyBsMk5SshHKwY7y7zi4cgc8uI-Jz2q_e8M",
+                authDomain: "fina-kenway.firebaseapp.com",
+                projectId: "fina-kenway",
+                storageBucket: "fina-kenway.appspot.com",
+                messagingSenderId: "559758011438",
+                appId: "1:559758011438:web:86329ee53ab213ab87c3bf",
+                measurementId: "G-1D036HTJPP"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            window.renderPosts = function(category) {
+                const postContainer = document.getElementById("posts");
+                if (!postContainer) {
+                    console.error("⚠️ ERRO: Elemento #posts não encontrado no HTML.");
+                    return;
+                }
+                postContainer.innerHTML = "<p>Carregando postagens...</p>";
+                db.collection("posts").where("category", "==", category).get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        postContainer.innerHTML = "<p style='color: yellow;'>Nenhuma postagem encontrada.</p>";
+                        return;
+                    }
+                    postContainer.innerHTML = "";
+                    querySnapshot.forEach((doc) => {
+                        const post = doc.data();
+                        const postElement = document.createElement("div");
+                        postElement.classList.add("post");
+                        postElement.innerHTML = `
+                            <h2>${post.title}</h2>
+                            <img src="${post.image}" alt="Imagem do post">
+                            <p>${post.content}</p>
+                        `;
+                        postContainer.appendChild(postElement);
+                    });
+                }).catch(error => {
+                    console.error("🔥 Erro ao buscar postagens:", error);
+                    postContainer.innerHTML = `<p style="color: red;">Erro ao carregar postagens. Verifique o console.</p>`;
+                });
+            }
+            renderPosts("Financeiro");
+        });
+    </script>
 </body>
 </html>
