@@ -13,7 +13,7 @@
             padding: 0;
         }
         header {
-            background: url('https://via.placeholder.com/1600x600?text=Infinity+Hub') no-repeat center center/cover;
+            background: url('https://source.unsplash.com/1600x600/?technology,finance') no-repeat center center/cover;
             color: white;
             padding: 60px 20px;
             text-align: center;
@@ -91,7 +91,6 @@
 <body>
     <header>Infinity Hub - Conhecimento Sem Limites</header>
     <nav>
-        <a href="#">Início</a>
         <a href="#" onclick="renderPosts('Financeiro')">Financeiro</a>
         <a href="#" onclick="renderPosts('Jogos')">Jogos</a>
         <a href="#" onclick="renderPosts('Histórias')">Histórias da Vida Real</a>
@@ -111,7 +110,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const firebaseConfig = {
-                apiKey: "SUA_NOVA_CHAVE",
+                apiKey: "AIzaSyBsMk5SshHKwY7y7zi4cgc8uI-Jz2q_e8M",
                 authDomain: "fina-kenway.firebaseapp.com",
                 projectId: "fina-kenway",
                 storageBucket: "fina-kenway.appspot.com",
@@ -121,7 +120,7 @@
             };
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
-            function renderPosts(category) {
+            window.renderPosts = function(category) {
                 const postContainer = document.getElementById("posts");
                 if (!postContainer) {
                     console.error("⚠️ ERRO: Elemento #posts não encontrado no HTML.");
