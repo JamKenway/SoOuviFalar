@@ -1,9 +1,9 @@
-firebase-config.json
 {
-    "apiKey": "SUA_NOVA_CHAVE",
+    "apiKey": "AIzaSyBsMk5SshHKwY7y7zi4cgc8uI-Jz2q_e8M",
     "authDomain": "fina-kenway.firebaseapp.com",
     "projectId": "fina-kenway",
     "storageBucket": "fina-kenway.appspot.com",
     "messagingSenderId": "559758011438",
-    "appId": "1:559758011438:web:86329ee53ab213ab87c3bf"
+    "appId": "1:559758011438:web:86329ee53ab213ab87c3bf",
+    "measurementId": "G-1D036HTJPP"
 }
