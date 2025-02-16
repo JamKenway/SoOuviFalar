@@ -93,7 +93,6 @@
         }
     </style>
     <script>
-      // Redireciona para HTTPS se não estiver seguro
       if (location.protocol !== 'https:') {
           location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
       }
@@ -105,12 +104,13 @@
 <body>
     <header>Infinity Hub - Conhecimento Sem Limites</header>
     <nav>
-        <a href="#" onclick="renderPosts('Financeiro')">Financeiro</a>
+        <a href="#" onclick="renderPosts('Finanças')">Finanças</a>
         <a href="#" onclick="renderPosts('Jogos')">Jogos</a>
-        <a href="#" onclick="renderPosts('Histórias')">Histórias da Vida Real</a>
+        <a href="#" onclick="renderPosts('Notícias')">Notícias</a>
         <a href="#" onclick="renderPosts('Contos')">Contos</a>
         <a href="#" onclick="renderPosts('Discussões')">Discussões</a>
         <a href="#" onclick="renderPosts('Saúde')">Saúde & Cuidados Pessoais</a>
+        <a href="#" onclick="renderPosts('Cursos')">Cursos</a>
     </nav>
     <div class="container">
         <h2>Últimas Postagens</h2>
@@ -137,7 +137,6 @@
             const db = firebase.firestore();
             
             window.likePost = function (postId) {
-                // Verifica se já foi clicado usando localStorage
                 if (localStorage.getItem("liked_" + postId)) {
                     alert("Você já curtiu esse post!");
                     return;
@@ -151,7 +150,6 @@
             };
 
             window.dislikePost = function (postId) {
-                // Verifica se já foi clicado usando localStorage
                 if (localStorage.getItem("disliked_" + postId)) {
                     alert("Você já descurtiu esse post!");
                     return;
@@ -164,7 +162,6 @@
                 .catch((error) => console.error("Erro ao dar dislike: ", error));
             };
 
-            // Função para alternar a visualização do conteúdo do post
             window.togglePostContent = function(element) {
                 const contentDiv = element.nextElementSibling;
                 if (contentDiv.style.display === "none" || contentDiv.style.display === "") {
@@ -184,7 +181,6 @@
                         const post = doc.data();
                         const postElement = document.createElement("div");
                         postElement.classList.add("post");
-                        // Post inicial com conteúdo oculto (minimizado)
                         postElement.innerHTML = `
                             <h2 onclick="togglePostContent(this)">${post.title}</h2>
                             <div class="post-content" style="display: none;">
@@ -204,7 +200,7 @@
                     console.error("Erro: ", error);
                 });
             }
-            renderPosts("Financeiro");
+            renderPosts("Finanças");
         });
     </script>
 </body>
