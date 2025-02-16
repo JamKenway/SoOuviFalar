@@ -54,14 +54,9 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             transition: transform 0.2s;
             text-align: justify;
-            cursor: pointer;
-        }
-        .post:hover {
-            transform: scale(1.02);
         }
         .post h2 {
             color: #ff0000;
-            text-align: left;
             font-size: 1.5em;
             margin-bottom: 10px;
         }
@@ -69,41 +64,26 @@
             width: 100%;
             border-radius: 10px;
             margin-bottom: 10px;
-            display: none;
         }
         .post p {
             font-size: 1.1em;
             line-height: 1.6;
-            display: none;
         }
-        .post.expanded img, .post.expanded p, .post.expanded .comments-section {
-            display: block;
-        }
-        .comments-section {
-            display: none;
+        .actions {
+            display: flex;
+            justify-content: space-between;
             margin-top: 10px;
         }
-        .comments-section textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-        }
-        .comment {
-            background: #333;
-            padding: 5px;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-        .like-dislike {
-            margin-top: 10px;
-        }
-        .like-dislike button {
-            background: none;
-            border: none;
+        .actions button {
+            background: #ff0000;
             color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
-            margin-right: 10px;
+        }
+        .comments {
+            margin-top: 10px;
         }
         footer {
             background: linear-gradient(90deg, #ff0000, #8a2be2, #00ffff);
@@ -114,6 +94,7 @@
             margin-top: 40px;
         }
     </style>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4859599011548606" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
@@ -122,6 +103,10 @@
     <nav>
         <a href="#" onclick="renderPosts('Financeiro')">Financeiro</a>
         <a href="#" onclick="renderPosts('Jogos')">Jogos</a>
+        <a href="#" onclick="renderPosts('Histórias')">Histórias da Vida Real</a>
+        <a href="#" onclick="renderPosts('Contos')">Contos</a>
+        <a href="#" onclick="renderPosts('Discussões')">Discussões</a>
+        <a href="#" onclick="renderPosts('Saúde')">Saúde & Cuidados Pessoais</a>
     </nav>
     <div class="container">
         <h2>Últimas Postagens</h2>
@@ -148,6 +133,7 @@
             const db = firebase.firestore();
             window.renderPosts = function(category) {
                 const postContainer = document.getElementById("posts");
+                postContainer.innerHTML = "<p>Carregando postagens...</p>";
                 db.collection("posts").where("category", "==", category).orderBy("date", "desc").get()
                 .then((querySnapshot) => {
                     postContainer.innerHTML = "";
@@ -158,22 +144,22 @@
                         postElement.innerHTML = `<h2>${post.title}</h2>
                             <img src="${post.image}" alt="Imagem do post">
                             <p>${post.content}</p>
-                            <div class="like-dislike">
+                            <div class="actions">
                                 <button onclick="likePost('${doc.id}')">👍 ${post.likes || 0}</button>
                                 <button onclick="dislikePost('${doc.id}')">👎 ${post.dislikes || 0}</button>
                             </div>
-                            <div class="comments-section">
-                                <textarea placeholder="Escreva um comentário..."></textarea>
-                                <button onclick="addComment('${doc.id}')">Enviar</button>
-                                <div class="comments"></div>
+                            <div class="comments">
+                                <input type="text" id="comment-${doc.id}" placeholder="Escreva um comentário...">
+                                <button onclick="commentPost('${doc.id}')">Comentar</button>
                             </div>`;
-                        postElement.addEventListener("click", function() {
-                            this.classList.toggle("expanded");
-                        });
                         postContainer.appendChild(postElement);
                     });
+                }).catch(error => {
+                    console.error("🔥 Erro ao buscar postagens:", error);
+                    postContainer.innerHTML = `<p style="color: red;">Erro ao carregar postagens.</p>`;
                 });
             }
+            renderPosts("Financeiro");
         });
     </script>
 </body>
