@@ -82,9 +82,6 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .comments {
-            margin-top: 10px;
-        }
         footer {
             background: linear-gradient(90deg, #ff0000, #8a2be2, #00ffff);
             color: white;
@@ -131,6 +128,17 @@
             };
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
+            
+            window.likePost = function (postId) {
+                const postRef = db.collection("posts").doc(postId);
+                postRef.update({ likes: firebase.firestore.FieldValue.increment(1) });
+            };
+
+            window.dislikePost = function (postId) {
+                const postRef = db.collection("posts").doc(postId);
+                postRef.update({ dislikes: firebase.firestore.FieldValue.increment(1) });
+            };
+
             window.renderPosts = function(category) {
                 const postContainer = document.getElementById("posts");
                 postContainer.innerHTML = "<p>Carregando postagens...</p>";
@@ -147,16 +155,9 @@
                             <div class="actions">
                                 <button onclick="likePost('${doc.id}')">👍 ${post.likes || 0}</button>
                                 <button onclick="dislikePost('${doc.id}')">👎 ${post.dislikes || 0}</button>
-                            </div>
-                            <div class="comments">
-                                <input type="text" id="comment-${doc.id}" placeholder="Escreva um comentário...">
-                                <button onclick="commentPost('${doc.id}')">Comentar</button>
                             </div>`;
                         postContainer.appendChild(postElement);
                     });
-                }).catch(error => {
-                    console.error("🔥 Erro ao buscar postagens:", error);
-                    postContainer.innerHTML = `<p style="color: red;">Erro ao carregar postagens.</p>`;
                 });
             }
             renderPosts("Financeiro");
