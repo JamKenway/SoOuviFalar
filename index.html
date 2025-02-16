@@ -5,10 +5,9 @@
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Só Ouvi Falar - Conteúdo que Transforma</title>
-  <!-- Fonte personalizada -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
   <style>
-    /* Reset básico */
+    /* Reset e estilos gerais */
     * {
       margin: 0;
       padding: 0;
@@ -90,6 +89,7 @@
     .post-content p {
       font-size: 1.1em;
       text-align: justify;
+      margin-bottom: 10px;
     }
     .actions {
       display: flex;
@@ -159,7 +159,7 @@
   </footer>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Configure com os dados do seu projeto Firebase:
+      // Configure os dados do seu projeto Firebase abaixo:
       const firebaseConfig = {
         apiKey: "AIzaSyBsMk5SshHKwY7y7zi4cgc8uI-Jz2q_e8M",
         authDomain: "fina-kenway.firebaseapp.com",
@@ -210,7 +210,7 @@
           .catch((error) => console.error("Erro ao dar dislike: ", error));
       };
 
-      // Renderiza as postagens em tempo real usando onSnapshot
+      // Renderiza as postagens em tempo real utilizando onSnapshot
       window.renderPosts = function(category) {
         const postContainer = document.getElementById("posts");
         postContainer.innerHTML = "<p>Carregando postagens...</p>";
@@ -232,7 +232,7 @@
                   <h2 onclick="togglePostContent(this)">${post.title}</h2>
                   <div class="post-content">
                     ${ post.image ? `<img src="${post.image}" alt="Imagem do post">` : '' }
-                    <p>${post.content}</p>
+                    ${ Array.isArray(post.content) ? post.content.map(item => `<p>${item}</p>`).join('') : `<p>${post.content}</p>` }
                     <div class="actions">
                       <button onclick="likePost('${postId}')">👍 <span class="like-count">${post.likes || 0}</span></button>
                       <button onclick="dislikePost('${postId}')">👎 <span class="dislike-count">${post.dislikes || 0}</span></button>
@@ -248,7 +248,7 @@
           });
       };
 
-      // Carrega inicialmente a categoria "Notícias"
+      // Inicialmente carrega a categoria "Notícias"
       renderPosts("Finanças");
     });
   </script>
