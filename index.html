@@ -159,29 +159,26 @@
   </footer>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Substitua os dados abaixo com as configurações do seu projeto Firebase
+      // Configure com os dados do seu projeto Firebase:
       const firebaseConfig = {
         apiKey: "AIzaSyBsMk5SshHKwY7y7zi4cgc8uI-Jz2q_e8M",
         authDomain: "fina-kenway.firebaseapp.com",
         projectId: "fina-kenway",
         storageBucket: "fina-kenway.appspot.com",
-        messagingSenderId: "55975801143",
-        appId: "1:559758011438:web:86329ee53ab213ab87c3bf"
+        messagingSenderId: "559758011438",
+        appId: "1:559758011438:web:86329ee53ab213ab87c3bf",
+        measurementId: "G-1D036HTJPP"
       };
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
-      
-      // Função para alternar a visualização do conteúdo do post (minimizado/expandido)
+
+      // Alterna a visualização do conteúdo do post (minimizado/expandido)
       window.togglePostContent = function(element) {
         const contentDiv = element.nextElementSibling;
-        if (contentDiv.style.display === "none" || contentDiv.style.display === "") {
-          contentDiv.style.display = "block";
-        } else {
-          contentDiv.style.display = "none";
-        }
+        contentDiv.style.display = (contentDiv.style.display === "block") ? "none" : "block";
       };
 
-      // Função para atualizar os likes de um post (com restrição via localStorage)
+      // Atualiza os likes com restrição via localStorage
       window.likePost = function(postId) {
         if (localStorage.getItem("liked_" + postId)) {
           alert("Você já curtiu esse post!");
@@ -191,14 +188,13 @@
         postRef.update({ likes: firebase.firestore.FieldValue.increment(1) })
           .then(() => {
             localStorage.setItem("liked_" + postId, "true");
-            // Atualiza a contagem exibida
-            document.querySelector(`#post-${postId} .like-count`).innerText =
-              parseInt(document.querySelector(`#post-${postId} .like-count`).innerText) + 1;
+            const countElem = document.querySelector(`#post-${postId} .like-count`);
+            countElem.innerText = parseInt(countElem.innerText) + 1;
           })
           .catch((error) => console.error("Erro ao dar like: ", error));
       };
 
-      // Função para atualizar os dislikes de um post (com restrição via localStorage)
+      // Atualiza os dislikes com restrição via localStorage
       window.dislikePost = function(postId) {
         if (localStorage.getItem("disliked_" + postId)) {
           alert("Você já descurtiu esse post!");
@@ -208,23 +204,25 @@
         postRef.update({ dislikes: firebase.firestore.FieldValue.increment(1) })
           .then(() => {
             localStorage.setItem("disliked_" + postId, "true");
-            document.querySelector(`#post-${postId} .dislike-count`).innerText =
-              parseInt(document.querySelector(`#post-${postId} .dislike-count`).innerText) + 1;
+            const countElem = document.querySelector(`#post-${postId} .dislike-count`);
+            countElem.innerText = parseInt(countElem.innerText) + 1;
           })
           .catch((error) => console.error("Erro ao dar dislike: ", error));
       };
 
-      // Função para renderizar as postagens de acordo com a categoria selecionada
+      // Renderiza as postagens em tempo real usando onSnapshot
       window.renderPosts = function(category) {
         const postContainer = document.getElementById("posts");
         postContainer.innerHTML = "<p>Carregando postagens...</p>";
-        db.collection("posts").where("category", "==", category).orderBy("date", "desc").get()
-          .then((querySnapshot) => {
+        db.collection("posts")
+          .where("category", "==", category)
+          .orderBy("date", "desc")
+          .onSnapshot((snapshot) => {
             postContainer.innerHTML = "";
-            if(querySnapshot.empty) {
+            if (snapshot.empty) {
               postContainer.innerHTML = "<p>Nenhuma postagem encontrada nesta categoria.</p>";
             } else {
-              querySnapshot.forEach((doc) => {
+              snapshot.forEach((doc) => {
                 const post = doc.data();
                 const postId = doc.id;
                 const postElement = document.createElement("div");
@@ -244,10 +242,9 @@
                 postContainer.appendChild(postElement);
               });
             }
-          })
-          .catch((error) => {
+          }, (error) => {
             postContainer.innerHTML = "<p>Erro ao carregar postagens.</p>";
-            console.error("Erro: ", error);
+            console.error("Erro ao monitorar postagens: ", error);
           });
       };
 
