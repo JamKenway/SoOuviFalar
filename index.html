@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infinity Hub - Conhecimento Sem Limites</title>
     <style>
@@ -53,12 +54,12 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             transition: transform 0.2s;
-            text-align: justify;
         }
         .post h2 {
             color: #ff0000;
             font-size: 1.5em;
             margin-bottom: 10px;
+            cursor: pointer;
         }
         .post img {
             width: 100%;
@@ -91,6 +92,12 @@
             margin-top: 40px;
         }
     </style>
+    <script>
+      // Redireciona para HTTPS se não estiver seguro
+      if (location.protocol !== 'https:') {
+          location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+      }
+    </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4859599011548606" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -130,13 +137,41 @@
             const db = firebase.firestore();
             
             window.likePost = function (postId) {
+                // Verifica se já foi clicado usando localStorage
+                if (localStorage.getItem("liked_" + postId)) {
+                    alert("Você já curtiu esse post!");
+                    return;
+                }
                 const postRef = db.collection("posts").doc(postId);
-                postRef.update({ likes: firebase.firestore.FieldValue.increment(1) });
+                postRef.update({ likes: firebase.firestore.FieldValue.increment(1) })
+                .then(() => {
+                    localStorage.setItem("liked_" + postId, "true");
+                })
+                .catch((error) => console.error("Erro ao dar like: ", error));
             };
 
             window.dislikePost = function (postId) {
+                // Verifica se já foi clicado usando localStorage
+                if (localStorage.getItem("disliked_" + postId)) {
+                    alert("Você já descurtiu esse post!");
+                    return;
+                }
                 const postRef = db.collection("posts").doc(postId);
-                postRef.update({ dislikes: firebase.firestore.FieldValue.increment(1) });
+                postRef.update({ dislikes: firebase.firestore.FieldValue.increment(1) })
+                .then(() => {
+                    localStorage.setItem("disliked_" + postId, "true");
+                })
+                .catch((error) => console.error("Erro ao dar dislike: ", error));
+            };
+
+            // Função para alternar a visualização do conteúdo do post
+            window.togglePostContent = function(element) {
+                const contentDiv = element.nextElementSibling;
+                if (contentDiv.style.display === "none" || contentDiv.style.display === "") {
+                    contentDiv.style.display = "block";
+                } else {
+                    contentDiv.style.display = "none";
+                }
             };
 
             window.renderPosts = function(category) {
@@ -149,15 +184,24 @@
                         const post = doc.data();
                         const postElement = document.createElement("div");
                         postElement.classList.add("post");
-                        postElement.innerHTML = `<h2>${post.title}</h2>
-                            <img src="${post.image}" alt="Imagem do post">
-                            <p>${post.content}</p>
-                            <div class="actions">
-                                <button onclick="likePost('${doc.id}')">👍 ${post.likes || 0}</button>
-                                <button onclick="dislikePost('${doc.id}')">👎 ${post.dislikes || 0}</button>
-                            </div>`;
+                        // Post inicial com conteúdo oculto (minimizado)
+                        postElement.innerHTML = `
+                            <h2 onclick="togglePostContent(this)">${post.title}</h2>
+                            <div class="post-content" style="display: none;">
+                                <img src="${post.image}" alt="Imagem do post">
+                                <p>${post.content}</p>
+                                <div class="actions">
+                                    <button onclick="likePost('${doc.id}')">👍 ${post.likes || 0}</button>
+                                    <button onclick="dislikePost('${doc.id}')">👎 ${post.dislikes || 0}</button>
+                                </div>
+                            </div>
+                        `;
                         postContainer.appendChild(postElement);
                     });
+                })
+                .catch((error) => {
+                    postContainer.innerHTML = "<p>Erro ao carregar postagens.</p>";
+                    console.error("Erro: ", error);
                 });
             }
             renderPosts("Financeiro");
