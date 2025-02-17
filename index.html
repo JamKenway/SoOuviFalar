@@ -2,7 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <!-- Meta tags para SEO e redes sociais -->
+  <meta name="description" content="Só Ouvi Falar – Conteúdo que Transforma. Descubra posts sobre Finanças, Jogos, Notícias, Contos, Discussões, Saúde & Cuidados Pessoais e Cursos.">
+  <meta name="keywords" content="Finanças, Jogos, Notícias, Contos, Discussões, Saúde, Cursos, Blog">
+  <meta property="og:title" content="Só Ouvi Falar - Conteúdo que Transforma">
+  <meta property="og:description" content="Descubra conteúdos diversos que transformam seu dia.">
+  <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/fina-kenway.firebasestorage.app/o/Fundo.webp?alt=media&token=ddf14962-80d3-4084-b3c7-61ce5866dba6">
+  <meta property="og:url" content="https://soouvifalar.com.br/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Só Ouvi Falar - Conteúdo que Transforma</title>
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
@@ -28,12 +34,16 @@
       font-weight: 600;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
+    /* Barra de navegação fixa */
     nav {
       background: #222;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       padding: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
     nav a {
       color: #fff;
@@ -45,6 +55,19 @@
     }
     nav a:hover {
       background: #ff0000;
+    }
+    /* Barra de busca */
+    .search-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .search-container input {
+      width: 80%;
+      max-width: 500px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
     }
     .container {
       max-width: 1200px;
@@ -66,7 +89,7 @@
       border-radius: 8px;
       margin-bottom: 20px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease;
     }
     .post:hover {
       transform: scale(1.02);
@@ -119,6 +142,58 @@
       color: #fff;
       text-decoration: none;
       margin: 0 5px;
+      font-weight: 600;
+    }
+    /* Social media e newsletter no rodapé */
+    .footer-extra {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .social-icons a {
+      margin: 0 10px;
+      color: #fff;
+      font-size: 1.2em;
+      text-decoration: none;
+    }
+    .newsletter {
+      margin-top: 15px;
+    }
+    .newsletter input[type="email"] {
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      margin-right: 5px;
+      font-size: 1em;
+    }
+    .newsletter input[type="submit"] {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      background: #ff0000;
+      color: #fff;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .newsletter input[type="submit"]:hover {
+      background: #e60000;
+    }
+    /* Botão Voltar ao Topo */
+    #backToTop {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff0000;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2em;
+      display: none;
+      z-index: 1001;
     }
   </style>
   <script>
@@ -144,22 +219,46 @@
     <a href="#" onclick="renderPosts('Saúde')">Saúde & Cuidados Pessoais</a>
     <a href="#" onclick="renderPosts('Cursos')">Cursos</a>
   </nav>
+  
+  <!-- Barra de busca para filtrar posts pelo título -->
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Buscar posts..." onkeyup="searchPosts()">
+  </div>
+  
   <div class="container">
     <h2>Últimas Postagens</h2>
     <div id="posts">
       <!-- As postagens serão carregadas aqui -->
     </div>
   </div>
+  
   <footer>
     <p>© 2025 Só Ouvi Falar - Conteúdo que Transforma.</p>
     <p>
       <a href="politica-de-privacidade.html">Política de Privacidade</a> | 
       <a href="termos-de-uso.html">Termos de Uso</a>
     </p>
+    <div class="footer-extra">
+      <div class="social-icons">
+        <a href="https://facebook.com" target="_blank">Facebook</a>
+        <a href="https://twitter.com" target="_blank">Twitter</a>
+        <a href="https://instagram.com" target="_blank">Instagram</a>
+      </div>
+      <div class="newsletter">
+        <form onsubmit="subscribeNewsletter(event)">
+          <input type="email" id="newsletterEmail" placeholder="Seu e-mail" required>
+          <input type="submit" value="Inscrever">
+        </form>
+      </div>
+    </div>
   </footer>
+  
+  <!-- Botão Voltar ao Topo -->
+  <button id="backToTop" onclick="scrollToTop()">↑</button>
+  
   <script>
+    // Configuração do Firebase
     document.addEventListener("DOMContentLoaded", function () {
-      // Configure os dados do seu projeto Firebase abaixo:
       const firebaseConfig = {
         apiKey: "AIzaSyBsMk5SshHKwY7y7zi4cgc8uI-Jz2q_e8M",
         authDomain: "fina-kenway.firebaseapp.com",
@@ -248,9 +347,41 @@
           });
       };
 
-      // Inicialmente carrega a categoria "Notícias"
+      // Inicialmente carrega a categoria "Finanças"
       renderPosts("Finanças");
+
+      // Exibe o botão Voltar ao Topo quando a página é rolada
+      window.addEventListener("scroll", function() {
+        document.getElementById("backToTop").style.display = (window.scrollY > 300) ? "block" : "none";
+      });
     });
+
+    // Função para filtrar posts pelo título
+    function searchPosts() {
+      const input = document.getElementById("searchInput");
+      const filter = input.value.toUpperCase();
+      const posts = document.getElementById("posts").getElementsByClassName("post");
+      for (let i = 0; i < posts.length; i++) {
+        const titleElem = posts[i].getElementsByTagName("h2")[0];
+        if (titleElem) {
+          const txtValue = titleElem.textContent || titleElem.innerText;
+          posts[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+        }
+      }
+    }
+
+    // Função para simular inscrição na newsletter
+    function subscribeNewsletter(event) {
+      event.preventDefault();
+      const email = document.getElementById("newsletterEmail").value;
+      alert("Obrigado por se inscrever, " + email + "!");
+      document.getElementById("newsletterEmail").value = "";
+    }
+
+    // Função para voltar ao topo
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   </script>
 </body>
 </html>
