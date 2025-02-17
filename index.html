@@ -14,11 +14,7 @@
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
   <style>
     /* Reset e estilos gerais */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
       background: url('https://firebasestorage.googleapis.com/v0/b/fina-kenway.firebasestorage.app/o/Fundo.webp?alt=media&token=ddf14962-80d3-4084-b3c7-61ce5866dba6') no-repeat center center fixed;
@@ -27,14 +23,34 @@
       line-height: 1.6;
     }
     header {
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0,0,0,0.75);
       padding: 60px 20px;
       text-align: center;
       font-size: 2.5em;
       font-weight: 600;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
-    /* Barra de navegação fixa */
+    /* Hero Section */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 100px 20px;
+      background: rgba(0,0,0,0.5);
+    }
+    .hero h1 { font-size: 3em; color: #ff0000; margin-bottom: 20px; }
+    .hero p { font-size: 1.5em; margin-bottom: 30px; }
+    .cta-btn {
+      background: #ff0000;
+      color: #fff;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .cta-btn:hover { background: #e60000; }
+    /* Navegação sticky */
     nav {
       background: #222;
       display: flex;
@@ -53,8 +69,43 @@
       border-radius: 5px;
       transition: background 0.3s;
     }
-    nav a:hover {
-      background: #ff0000;
+    nav a:hover { background: #ff0000; }
+    /* Slider de posts em destaque */
+    .slider {
+      position: relative;
+      max-width: 1200px;
+      margin: 40px auto;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+    .slides { display: flex; transition: transform 0.5s ease-in-out; }
+    .slide { min-width: 100%; position: relative; display: none; }
+    .slide img { width: 100%; display: block; border-radius: 10px; }
+    .slide-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: rgba(0,0,0,0.6);
+    }
+    .slide-overlay h2 { color: #ff0000; font-size: 2em; margin-bottom: 10px; }
+    .slide-overlay p { font-size: 1.2em; }
+    .slider-controls {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+    }
+    .slider-controls button {
+      background: rgba(0,0,0,0.5);
+      border: none;
+      color: #fff;
+      font-size: 2em;
+      cursor: pointer;
+      padding: 10px;
     }
     /* Barra de busca */
     .search-container {
@@ -69,13 +120,14 @@
       border-radius: 5px;
       font-size: 1em;
     }
+    /* Seção de postagens */
     .container {
       max-width: 1200px;
       margin: 40px auto;
       padding: 20px;
-      background: rgba(30, 30, 30, 0.95);
+      background: rgba(30,30,30,0.95);
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     }
     .container h2 {
       margin-bottom: 20px;
@@ -88,22 +140,17 @@
       padding: 20px;
       border-radius: 8px;
       margin-bottom: 20px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
       transition: transform 0.3s ease;
     }
-    .post:hover {
-      transform: scale(1.02);
-    }
+    .post:hover { transform: scale(1.02); }
     .post h2 {
       font-size: 1.5em;
       margin-bottom: 10px;
       cursor: pointer;
       color: #ff0000;
     }
-    .post-content {
-      display: none;
-      margin-top: 10px;
-    }
+    .post-content { display: none; margin-top: 10px; }
     .post-content img {
       width: 100%;
       border-radius: 10px;
@@ -128,9 +175,8 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .actions button:hover {
-      background: #e60000;
-    }
+    .actions button:hover { background: #e60000; }
+    /* Rodapé, redes sociais e newsletter */
     footer {
       background: linear-gradient(90deg, #ff0000, #8a2be2, #00ffff);
       text-align: center;
@@ -144,7 +190,6 @@
       margin: 0 5px;
       font-weight: 600;
     }
-    /* Social media e newsletter no rodapé */
     .footer-extra {
       margin-top: 20px;
       display: flex;
@@ -157,9 +202,7 @@
       font-size: 1.2em;
       text-decoration: none;
     }
-    .newsletter {
-      margin-top: 15px;
-    }
+    .newsletter { margin-top: 15px; }
     .newsletter input[type="email"] {
       padding: 8px;
       border: none;
@@ -177,9 +220,7 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .newsletter input[type="submit"]:hover {
-      background: #e60000;
-    }
+    .newsletter input[type="submit"]:hover { background: #e60000; }
     /* Botão Voltar ao Topo */
     #backToTop {
       position: fixed;
@@ -207,9 +248,14 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <header>
-    Só Ouvi Falar - Conteúdo que Transforma
-  </header>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Bem-vindo ao Só Ouvi Falar</h1>
+    <p>Conteúdo que Transforma e Inspira</p>
+    <button class="cta-btn" onclick="scrollToSection('postsSection')">Explorar</button>
+  </section>
+  
+  <!-- Navegação -->
   <nav>
     <a href="#" onclick="renderPosts('Finanças')">Finanças</a>
     <a href="#" onclick="renderPosts('Jogos')">Jogos</a>
@@ -220,18 +266,31 @@
     <a href="#" onclick="renderPosts('Cursos')">Cursos</a>
   </nav>
   
-  <!-- Barra de busca para filtrar posts pelo título -->
+  <!-- Slider de Posts em Destaque -->
+  <section class="slider" id="featuredSlider">
+    <div class="slides" id="sliderSlides">
+      <!-- Slides serão carregados via Firebase -->
+    </div>
+    <div class="slider-controls">
+      <button onclick="prevSlide()">&#10094;</button>
+      <button onclick="nextSlide()">&#10095;</button>
+    </div>
+  </section>
+  
+  <!-- Barra de Busca -->
   <div class="search-container">
     <input type="text" id="searchInput" placeholder="Buscar posts..." onkeyup="searchPosts()">
   </div>
   
-  <div class="container">
+  <!-- Seção de Últimas Postagens -->
+  <section class="container" id="postsSection">
     <h2>Últimas Postagens</h2>
     <div id="posts">
-      <!-- As postagens serão carregadas aqui -->
+      <!-- Postagens carregadas dinamicamente -->
     </div>
-  </div>
+  </section>
   
+  <!-- Rodapé -->
   <footer>
     <p>© 2025 Só Ouvi Falar - Conteúdo que Transforma.</p>
     <p>
@@ -270,46 +329,58 @@
       };
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
-
-      // Alterna a visualização do conteúdo do post (minimizado/expandido)
-      window.togglePostContent = function(element) {
-        const contentDiv = element.nextElementSibling;
-        contentDiv.style.display = (contentDiv.style.display === "block") ? "none" : "block";
-      };
-
-      // Atualiza os likes com restrição via localStorage
-      window.likePost = function(postId) {
-        if (localStorage.getItem("liked_" + postId)) {
-          alert("Você já curtiu esse post!");
-          return;
-        }
-        const postRef = db.collection("posts").doc(postId);
-        postRef.update({ likes: firebase.firestore.FieldValue.increment(1) })
-          .then(() => {
-            localStorage.setItem("liked_" + postId, "true");
-            const countElem = document.querySelector(`#post-${postId} .like-count`);
-            countElem.innerText = parseInt(countElem.innerText) + 1;
+      
+      /* --- Slider de Destaques --- */
+      let slideIndex = 0;
+      function loadFeaturedPosts() {
+        db.collection("posts")
+          .where("featured", "==", true)
+          .orderBy("date", "desc")
+          .get()
+          .then((snapshot) => {
+            const sliderSlides = document.getElementById("sliderSlides");
+            sliderSlides.innerHTML = "";
+            snapshot.forEach((doc) => {
+              const post = doc.data();
+              sliderSlides.innerHTML += `
+                <div class="slide">
+                  ${ post.image ? `<img src="${post.image}" alt="Imagem do post">` : '' }
+                  <div class="slide-overlay">
+                    <h2>${post.title}</h2>
+                    <p>${ post.description ? post.description : "" }</p>
+                  </div>
+                </div>
+              `;
+            });
+            showSlide(slideIndex);
           })
-          .catch((error) => console.error("Erro ao dar like: ", error));
-      };
-
-      // Atualiza os dislikes com restrição via localStorage
-      window.dislikePost = function(postId) {
-        if (localStorage.getItem("disliked_" + postId)) {
-          alert("Você já descurtiu esse post!");
-          return;
-        }
-        const postRef = db.collection("posts").doc(postId);
-        postRef.update({ dislikes: firebase.firestore.FieldValue.increment(1) })
-          .then(() => {
-            localStorage.setItem("disliked_" + postId, "true");
-            const countElem = document.querySelector(`#post-${postId} .dislike-count`);
-            countElem.innerText = parseInt(countElem.innerText) + 1;
-          })
-          .catch((error) => console.error("Erro ao dar dislike: ", error));
-      };
-
-      // Renderiza as postagens em tempo real utilizando onSnapshot
+          .catch((error) => {
+            console.error("Erro ao carregar posts em destaque: ", error);
+          });
+      }
+      
+      function showSlide(index) {
+        const slides = document.querySelectorAll(".slide");
+        if (slides.length === 0) return;
+        if (index >= slides.length) { slideIndex = 0; }
+        if (index < 0) { slideIndex = slides.length - 1; }
+        slides.forEach(slide => slide.style.display = "none");
+        slides[slideIndex].style.display = "block";
+      }
+      
+      window.nextSlide = function() {
+        slideIndex++;
+        showSlide(slideIndex);
+      }
+      
+      window.prevSlide = function() {
+        slideIndex--;
+        showSlide(slideIndex);
+      }
+      
+      loadFeaturedPosts();
+      
+      /* --- Renderização de Postagens --- */
       window.renderPosts = function(category) {
         const postContainer = document.getElementById("posts");
         postContainer.innerHTML = "<p>Carregando postagens...</p>";
@@ -346,17 +417,23 @@
             console.error("Erro ao monitorar postagens: ", error);
           });
       };
-
-      // Inicialmente carrega a categoria "Finanças"
+      
+      // Renderiza a categoria padrão ("Finanças")
       renderPosts("Finanças");
-
-      // Exibe o botão Voltar ao Topo quando a página é rolada
+      
+      // Exibe o botão "Voltar ao Topo" conforme o scroll
       window.addEventListener("scroll", function() {
         document.getElementById("backToTop").style.display = (window.scrollY > 300) ? "block" : "none";
       });
     });
-
-    // Função para filtrar posts pelo título
+    
+    // Alterna a visualização do conteúdo do post
+    window.togglePostContent = function(element) {
+      const contentDiv = element.nextElementSibling;
+      contentDiv.style.display = (contentDiv.style.display === "block") ? "none" : "block";
+    };
+    
+    // Função de busca de posts por título
     function searchPosts() {
       const input = document.getElementById("searchInput");
       const filter = input.value.toUpperCase();
@@ -369,16 +446,37 @@
         }
       }
     }
-
-    // Função para simular inscrição na newsletter
+    
+    // Função para processar a inscrição na newsletter (backend via Cloud Functions)
     function subscribeNewsletter(event) {
       event.preventDefault();
       const email = document.getElementById("newsletterEmail").value;
-      alert("Obrigado por se inscrever, " + email + "!");
-      document.getElementById("newsletterEmail").value = "";
+      fetch("https://<REGION>-<PROJECT_ID>.cloudfunctions.net/subscribeNewsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message) {
+          alert(data.message);
+          document.getElementById("newsletterEmail").value = "";
+        } else if (data.error) {
+          alert("Erro: " + data.error);
+        }
+      })
+      .catch(error => {
+        console.error("Erro ao inscrever:", error);
+        alert("Erro ao realizar a inscrição.");
+      });
     }
-
-    // Função para voltar ao topo
+    
+    // Função para rolar até uma seção específica
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Função para rolar ao topo
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
